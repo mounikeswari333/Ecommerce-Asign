@@ -4,6 +4,8 @@ import { useAuth } from '../../context/AuthContext';
 import { ShoppingBag, TrendingUp, Package, CreditCard, LogOut, ArrowRight, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function SellerDashboard() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -33,11 +35,11 @@ export default function SellerDashboard() {
         const headers = { Authorization: `Bearer ${token}` };
         
         // Fetch orders
-        const ordersRes = await axios.get('http://localhost:5000/api/orders', { headers });
+        const ordersRes = await axios.get(`${API_BASE}/api/orders`, { headers });
         // Fetch products
-        const productsRes = await axios.get('http://localhost:5000/api/products', { headers });
+        const productsRes = await axios.get(`${API_BASE}/api/products`, { headers });
         // Fetch payments
-        const paymentsRes = await axios.get('http://localhost:5000/api/payments', { headers });
+        const paymentsRes = await axios.get(`${API_BASE}/api/payments`, { headers });
         
         if (ordersRes.data.success && productsRes.data.success) {
           const sellerId = user?.sellerId || 'PSPK-S-00001';

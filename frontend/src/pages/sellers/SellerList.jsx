@@ -7,6 +7,8 @@ import {
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function SellerList() {
   const navigate = useNavigate();
   const [sellers, setSellers] = useState([]);
@@ -23,7 +25,7 @@ export default function SellerList() {
   const fetchSellersList = async () => {
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.get('http://localhost:5000/api/sellers', {
+      const res = await axios.get(`${API_BASE}/api/sellers`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.success) {
@@ -46,7 +48,7 @@ export default function SellerList() {
     setActionLoading(sellerId);
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.post(`http://localhost:5000/api/sellers/${sellerId}/approve`, {}, {
+      const res = await axios.post(`${API_BASE}/api/sellers/${sellerId}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.success) {
@@ -67,7 +69,7 @@ export default function SellerList() {
     try {
       const token = localStorage.getItem('ps_token');
       // Suspend by setting status to suspended
-      const res = await axios.put(`http://localhost:5000/api/sellers/${sellerId}/status`, {
+      const res = await axios.put(`${API_BASE}/api/sellers/${sellerId}/status`, {
         status: 'suspended',
         reason: 'Suspended by admin'
       }, {

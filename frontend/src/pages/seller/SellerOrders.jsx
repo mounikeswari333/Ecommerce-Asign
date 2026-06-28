@@ -5,6 +5,8 @@ import { ShoppingBag, Eye, LogOut, Check, ChevronRight } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function SellerOrders() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -20,7 +22,7 @@ export default function SellerOrders() {
   const fetchSellerOrders = async () => {
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.get('http://localhost:5000/api/orders', {
+      const res = await axios.get(`${API_BASE}/api/orders`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.success) {
@@ -54,7 +56,7 @@ export default function SellerOrders() {
     setUpdating(true);
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.put(`http://localhost:5000/api/orders/${selectedOrder._id}/status`, {
+      const res = await axios.put(`${API_BASE}/api/orders/${selectedOrder._id}/status`, {
         status: statusUpdate,
         note: statusNote || `Status updated to ${statusUpdate} by seller`
       }, {
@@ -228,7 +230,7 @@ export default function SellerOrders() {
                   </div>
                   {selectedOrder.paymentStatus === 'paid' && (
                     <a 
-                      href={`http://localhost:5000/api/payments/receipt/${selectedOrder.orderId}`}
+                      href={`${API_BASE}/api/payments/receipt/${selectedOrder.orderId}`}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn"

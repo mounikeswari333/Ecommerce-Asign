@@ -4,6 +4,8 @@ import { ArrowLeft, ShoppingCart, ShieldCheck, Heart, Star, Plus, Minus } from '
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const getCategoryFallbackImage = (category) => {
   const fallbacks = {
     'Milk': 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=600',
@@ -27,7 +29,7 @@ export default function ProductDetail() {
     const fetchProductDetail = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:5000/api/products/public/${id}`);
+        const res = await axios.get(`${API_BASE}/api/products/public/${id}`);
         if (res.data.success) {
           setProduct(res.data.product);
         }

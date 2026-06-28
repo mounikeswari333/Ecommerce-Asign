@@ -5,6 +5,8 @@ import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 import { MOCK_DASHBOARD, MOCK_ORDERS, MOCK_SELLERS } from '../data/mockData';
 import {
   TrendingUp, TrendingDown, ShoppingCart, Package, Users,
@@ -53,7 +55,7 @@ export default function Dashboard() {
     const fetchDashboard = async () => {
       try {
         const token = localStorage.getItem('ps_token');
-        const res = await axios.get('http://localhost:5000/api/dashboard', {
+        const res = await axios.get(`${API_BASE}/api/dashboard`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data.success) {

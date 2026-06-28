@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext(null);
-const API_URL = 'http://localhost:5000/api';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
 
 export function AuthProvider({ children }) {
   const [admin, setAdmin] = useState(null);
@@ -61,7 +61,7 @@ export function AuthProvider({ children }) {
       console.error('Buyer login error:', err);
       // Mock fallback
       if (email === 'buyer@pashusevak.com' && password === 'Buyer@123') {
-        const mockBuyer = { id: 'buyer-001', name: 'Amit Buyer', email: 'buyer@pashusevak.com', role: 'buyer', buyerId: 'PSPK-B-00001', addresses: [{ label: 'Home', line1: '123 Sweet Cow Colony', city: 'Pune', state: 'Maharashtra', pincode: '411001', isDefault: true }] };
+        const mockBuyer = { id: '60d5ec49f3e4981e4881e001', name: 'Amit Buyer', email: 'buyer@pashusevak.com', role: 'buyer', buyerId: 'PSPK-B-00001', addresses: [{ label: 'Home', line1: '123 Sweet Cow Colony', city: 'Pune', state: 'Maharashtra', pincode: '411001', isDefault: true }] };
         localStorage.setItem('ps_token', 'mock-token');
         localStorage.setItem('ps_admin', JSON.stringify(mockBuyer));
         setAdmin(mockBuyer);
@@ -87,7 +87,7 @@ export function AuthProvider({ children }) {
       console.error('Seller login error:', err);
       // Mock fallback
       if (email === 'seller@pashusevak.com' && password === 'Seller@123') {
-        const mockSeller = { id: 'seller-001', name: 'Ravi Seller', businessName: 'Gau Kripa Dairy', email: 'seller@pashusevak.com', role: 'seller', sellerId: 'PSPK-S-00001' };
+        const mockSeller = { id: '60d5ec49f3e4981e4881e002', name: 'Ravi Seller', businessName: 'Gau Kripa Dairy', email: 'seller@pashusevak.com', role: 'seller', sellerId: 'PSPK-S-00001' };
         localStorage.setItem('ps_token', 'mock-token');
         localStorage.setItem('ps_admin', JSON.stringify(mockSeller));
         setAdmin(mockSeller);

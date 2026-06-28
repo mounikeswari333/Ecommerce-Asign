@@ -7,6 +7,8 @@ import {
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function SellerProfile() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -25,7 +27,7 @@ export default function SellerProfile() {
   const fetchSellerDetails = async () => {
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.get(`http://localhost:5000/api/sellers/${id}`, {
+      const res = await axios.get(`${API_BASE}/api/sellers/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.success) {
@@ -50,7 +52,7 @@ export default function SellerProfile() {
     setActionLoading(true);
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.post(`http://localhost:5000/api/sellers/${id}/approve`, {}, {
+      const res = await axios.post(`${API_BASE}/api/sellers/${id}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.success) {
@@ -70,7 +72,7 @@ export default function SellerProfile() {
     setActionLoading(true);
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.put(`http://localhost:5000/api/sellers/${id}/status`, {
+      const res = await axios.put(`${API_BASE}/api/sellers/${id}/status`, {
         status,
         reason: actionReason
       }, {
@@ -93,7 +95,7 @@ export default function SellerProfile() {
   const handleSaveCommission = async () => {
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.put(`http://localhost:5000/api/sellers/${id}/commission`, {
+      const res = await axios.put(`${API_BASE}/api/sellers/${id}/commission`, {
         commissionRate: parseFloat(commissionOverride)
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -111,7 +113,7 @@ export default function SellerProfile() {
   const handleKycAction = async (docIndex, status, reason = '') => {
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.put(`http://localhost:5000/api/sellers/${id}/kyc/${docIndex}`, {
+      const res = await axios.put(`${API_BASE}/api/sellers/${id}/kyc/${docIndex}`, {
         status,
         rejectionReason: reason
       }, {
@@ -295,7 +297,7 @@ export default function SellerProfile() {
                       {getDocStatusBadge(doc.status)}
                     </div>
                     <div style={{ fontSize: 12, color: 'var(--gray-600)' }}>
-                      File Link: <a href={`http://localhost:5000${doc.url}`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--yellow-700)', fontWeight: 600 }}>Open File</a>
+                      File Link: <a href={`${API_BASE}${doc.url}`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--yellow-700)', fontWeight: 600 }}>Open File</a>
                     </div>
                     {doc.status === 'pending' && (
                       <div style={{ display: 'flex', gap: 8, marginTop: 'auto', paddingTop: 8 }}>

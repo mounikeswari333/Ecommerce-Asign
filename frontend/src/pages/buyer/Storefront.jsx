@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const getCategoryFallbackImage = (category) => {
   const fallbacks = {
     'Milk': 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=600',
@@ -85,7 +87,7 @@ export default function Storefront() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:5000/api/products/public?category=${activeCategory}&search=${search}`);
+        const res = await axios.get(`${API_BASE}/api/products/public?category=${activeCategory}&search=${search}`);
         if (res.data.success) {
           setProducts(res.data.products);
         }

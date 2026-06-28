@@ -4,6 +4,8 @@ import { useAuth } from '../../context/AuthContext';
 import { CreditCard, LogOut, Info, ChevronDown, ChevronUp } from 'lucide-react';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function SellerPayments() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -16,7 +18,7 @@ export default function SellerPayments() {
     const fetchSellerPayments = async () => {
       try {
         const token = localStorage.getItem('ps_token');
-        const res = await axios.get('http://localhost:5000/api/payments', {
+        const res = await axios.get(`${API_BASE}/api/payments`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data.success) {

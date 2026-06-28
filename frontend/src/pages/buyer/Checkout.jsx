@@ -5,6 +5,8 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function Checkout() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -51,7 +53,7 @@ export default function Checkout() {
         try {
           const sellerId = cartItems[0]?.sellerId || 'direct-seller';
           const token = localStorage.getItem('ps_token');
-          const res = await axios.post('http://localhost:5000/api/logistics/calculate-shipping', {
+          const res = await axios.post(`${API_BASE}/api/logistics/calculate-shipping`, {
             pincode,
             sellerId
           }, {
@@ -125,7 +127,7 @@ export default function Checkout() {
       };
 
       try {
-        const orderRes = await axios.post('http://localhost:5000/api/orders', orderData, {
+        const orderRes = await axios.post(`${API_BASE}/api/orders`, orderData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!orderRes.data.success) {
@@ -173,7 +175,7 @@ export default function Checkout() {
           buyerId: user?.buyerId
         };
 
-        const checkoutRes = await axios.post('http://localhost:5000/api/payments/checkout', checkoutData, {
+        const checkoutRes = await axios.post(`${API_BASE}/api/payments/checkout`, checkoutData, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -193,7 +195,7 @@ export default function Checkout() {
           handler: async function (response) {
             setLoading(true);
             try {
-              const verifyRes = await axios.post('http://localhost:5000/api/payments/verify', {
+              const verifyRes = await axios.post(`${API_BASE}/api/payments/verify`, {
                 orderId,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id,

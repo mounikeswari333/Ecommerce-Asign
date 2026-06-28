@@ -24,7 +24,21 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/pashusevak')
-  .then(() => console.log('✅ MongoDB connected'))
+  .then(async () => {
+    console.log('✅ MongoDB connected');
+    try {
+      const Product = require('./models/Product');
+      const count = await Product.countDocuments();
+      if (count === 0) {
+        console.log('⚠️ Database is empty. Running auto-seed...');
+        const { seedData } = require('./seed');
+        await seedData(true);
+        console.log('✅ Auto-seed completed successfully!');
+      }
+    } catch (seedErr) {
+      console.error('❌ Auto-seed failed:', seedErr.message);
+    }
+  })
   .catch(err => {
     console.error('❌ MongoDB connection error:', err.message);
     console.log('⚠️  Running without database — API routes will use mock responses');

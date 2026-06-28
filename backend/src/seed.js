@@ -26,9 +26,11 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-async function seed() {
-  await mongoose.connect(MONGO_URI);
-  console.log('Connected to MongoDB');
+async function seed(skipConn = false) {
+  if (!skipConn) {
+    await mongoose.connect(MONGO_URI);
+    console.log('Connected to MongoDB');
+  }
 
   // ── 1. Clear all collections ────────────────────────────────────────────────
   console.log('Clearing collections...');
@@ -623,12 +625,18 @@ async function seed() {
   console.log('Created 5 notifications.');
 
   console.log('\n✅  Seed complete!');
-  await mongoose.connection.close();
-  process.exit(0);
+  if (!skipConn) {
+    await mongoose.connection.close();
+    process.exit(0);
+  }
 }
 
-seed().catch((err) => {
-  console.error('Seed failed:', err);
-  mongoose.connection.close();
-  process.exit(1);
-});
+if (require.main === module) {
+  seed(false).catch((err) => {
+    console.error('Seed failed:', err);
+    mongoose.connection.close();
+    process.exit(1);
+  });
+}
+
+module.exports = { seedData: seed };

@@ -5,6 +5,8 @@ import { LogOut, Save, FileText, Upload, CheckCircle, AlertTriangle, XCircle, In
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function SellerProfile() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -42,7 +44,7 @@ export default function SellerProfile() {
       const sellerId = user?.id || user?._id;
       if (!sellerId) return;
 
-      const res = await axios.get(`http://localhost:5000/api/sellers/${sellerId}`, {
+      const res = await axios.get(`${API_BASE}/api/sellers/${sellerId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -86,7 +88,7 @@ export default function SellerProfile() {
       const token = localStorage.getItem('ps_token');
       const sellerId = user?.id || user?._id;
       
-      const res = await axios.put(`http://localhost:5000/api/sellers/${sellerId}`, {
+      const res = await axios.put(`${API_BASE}/api/sellers/${sellerId}`, {
         businessName,
         ownerName,
         phone,
@@ -152,7 +154,7 @@ export default function SellerProfile() {
       try {
         const token = localStorage.getItem('ps_token');
         const sellerId = user?.id || user?._id;
-        const res = await axios.put(`http://localhost:5000/api/sellers/${sellerId}`, {
+        const res = await axios.put(`${API_BASE}/api/sellers/${sellerId}`, {
           kycDocs: updatedDocs
         }, {
           headers: { Authorization: `Bearer ${token}` }
@@ -376,7 +378,7 @@ export default function SellerProfile() {
                       <div style={{ fontSize: 12, color: 'var(--gray-600)', minHeight: 40 }}>
                         {doc ? (
                           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                            <span>Uploaded Document: <a href={`http://localhost:5000${doc.url}`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--yellow-700)', fontWeight: 600 }}>View File</a></span>
+                            <span>Uploaded Document: <a href={`${API_BASE}${doc.url}`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--yellow-700)', fontWeight: 600 }}>View File</a></span>
                             {doc.status === 'rejected' && (
                               <span style={{ color: '#C62828', display: 'flex', alignItems: 'center', gap: 4 }}>
                                 ⚠️ Rejection Reason: {doc.rejectionReason || 'Invalid file format'}

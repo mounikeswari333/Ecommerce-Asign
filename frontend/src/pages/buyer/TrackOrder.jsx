@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Truck, Calendar, ShoppingBag } from 'lucide-react';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const STATUS_STEPS = [
   { key: 'placed', label: 'Order Placed', desc: 'Order received and payment confirmed.' },
   { key: 'packed', label: 'Packed by Seller', desc: 'Items packed and ready for dispatch.' },
@@ -21,7 +23,7 @@ export default function TrackOrder() {
     const fetchOrder = async () => {
       try {
         const token = localStorage.getItem('ps_token');
-        const res = await axios.get(`http://localhost:5000/api/orders/${id}/tracking`, {
+        const res = await axios.get(`${API_BASE}/api/orders/${id}/tracking`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data.success) {

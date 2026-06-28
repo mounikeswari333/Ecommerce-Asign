@@ -5,6 +5,8 @@ import { Package, Plus, LogOut, Edit, Trash2 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function SellerProducts() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -26,7 +28,7 @@ export default function SellerProducts() {
   const fetchSellerProducts = async () => {
     try {
       const token = localStorage.getItem('ps_token');
-      const res = await axios.get('http://localhost:5000/api/products', {
+      const res = await axios.get(`${API_BASE}/api/products`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.success) {
@@ -62,7 +64,7 @@ export default function SellerProducts() {
 
     setSubmitting(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/products', {
+      const res = await axios.post(`${API_BASE}/api/products`, {
         name,
         category,
         description,

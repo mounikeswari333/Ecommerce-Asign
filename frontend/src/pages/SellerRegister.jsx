@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, CheckCircle, ArrowLeft, Store } from 'lucide-react';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const CATEGORIES = [
   { name: 'Milk', icon: '🥛' }, { name: 'Ghee', icon: '🫙' }, { name: 'Paneer', icon: '🧀' },
   { name: 'Cattle Feed', icon: '🌾' }, { name: 'Equipment', icon: '🔧' }, { name: 'Poultry', icon: '🐔' },
@@ -63,7 +65,7 @@ export default function SellerRegister() {
     e.preventDefault();
     if (!validateStep()) return;
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register-seller', form);
+      const res = await axios.post(`${API_BASE}/api/auth/register-seller`, form);
       if (res.data.success) {
         setSubmitted(true);
       } else {

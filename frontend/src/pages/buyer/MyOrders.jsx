@@ -4,6 +4,8 @@ import { ArrowLeft, ShoppingBag, Eye, Calendar, User } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function MyOrders() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -15,7 +17,7 @@ export default function MyOrders() {
       try {
         const token = localStorage.getItem('ps_token');
         // Fetch all orders - if buyer role is active, we can filter locally or call backend
-        const res = await axios.get('http://localhost:5000/api/orders', {
+        const res = await axios.get(`${API_BASE}/api/orders`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
